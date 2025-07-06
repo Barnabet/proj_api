@@ -1,0 +1,10 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Super simple static frontend to test Google OAuth gateway",
+  "scripts": {
+    "dev": "npx serve -l 5173 ."
+  },
+  "dependencies": {}
+} 
