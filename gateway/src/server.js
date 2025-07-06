@@ -11,9 +11,12 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
 // Load environment variables from .env file (at project root or in /gateway)
 dotenv.config();
+// Fallback: if not found in current working dir, also attempt to load root-level .env
+dotenv.config({ path: path.resolve(__dirname, "../../.env"), override: false });
 
 // --- ENV -------------------------------------------------------------------
 const {
