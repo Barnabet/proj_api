@@ -10,7 +10,7 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - SESSION_SECRET=${SESSION_SECRET}
       - FRONTEND_ORIGIN=http://localhost:5173
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/gateway_db
+      - DATABASE_URL=postgresql://proj:proj@postgres:5432/proj?schema=public
       - SERVICE_CATALOG_URL=http://catalog:4001
       - SERVICE_ANALYTICS_URL=http://analytics:4002
     depends_on:
