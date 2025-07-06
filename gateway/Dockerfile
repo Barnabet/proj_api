@@ -12,4 +12,4 @@ COPY . .
 
 # 4. Expose port & start
 EXPOSE 4000
-CMD ["node", "src/server.js"]
+CMD ["node", "src/index.js"]
