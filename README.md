@@ -31,6 +31,15 @@ SESSION_SECRET=some-session-secret
 
 ## 2. Run the stack
 
+- Commands :
+```bash
+cd profile-service
+npm install // dans gateway et profile-service 
+npx prisma generate
+npx prisma migrate dev --name init
+docker compose up --build
+```
+
 ```bash
 # Build images and start everything in the background
 docker compose up --build -d
