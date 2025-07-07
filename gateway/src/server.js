@@ -92,7 +92,7 @@ app.get(
 
     // In prod, set "secure: true" and consider SameSite=strict
     res.cookie("token", token, { httpOnly: true, sameSite: "lax" });
-    res.redirect(`${FRONTEND_ORIGIN}/dashboard`);
+    res.redirect(`${FRONTEND_ORIGIN}/home`);
   }
 );
 

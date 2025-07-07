@@ -1,30 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gateway Auth Test</title>
-    <style>
-      body {
-        font-family: sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-      }
-      a.button {
-        padding: 12px 24px;
-        background-color: #4285f4;
-        color: white;
-        text-decoration: none;
-        border-radius: 4px;
-        font-size: 1rem;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Welcome</h1>
-    <a class="button" href="http://localhost:4000/auth/google">Login with Google</a>
-  </body>
-</html> 
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gateway Auth</title>
+  <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+
+<header>
+  <h1>Project API WS</h1>
+  <nav>
+    <a href="/" id="nav-home" class="active">Accueil</a>
+    <a href="/about.html">À propos</a>
+  </nav>
+</header>
+
+<div class="circle small"></div>
+<div class="circle medium"></div>
+
+<main>
+  <!-- Page d'accueil -->
+  <section id="home-section" class="active">
+    <h1>Bienvenue 👋</h1>
+    <a class="button" href="http://localhost:4000/auth/google">Connexion Google</a>
+  </section>
+
+
+</main>
+
+<footer>
+  <p>&copy; 2025 Project API WS. Tous droits réservés.</p>
+</footer>
+
+<script>
+  // Gestion navigation onglets
+  const navHome = document.getElementById("nav-home");
+  const navProfile = document.getElementById("nav-profile");
+  const homeSection = document.getElementById("home-section");
+  const profileSection = document.getElementById("profile-section");
+
+  function showSection(section) {
+    homeSection.classList.remove("active");
+    profileSection.classList.remove("active");
+
+    if (section === "home") {
+      homeSection.classList.add("active");
+      loadProfileData(); // Optionnel si tu veux précharger au retour
+    } else if (section === "profile") {
+      profileSection.classList.add("active");
+      loadProfileData();
+    }
+  }
+
+  navHome.addEventListener("click", (e) => {
+    e.preventDefault();
+    showSection("home");
+  });
+
+  navProfile.addEventListener("click", (e) => {
+    e.preventDefault();
+    showSection("profile");
+  });
+
+  // Chargement profil via microservice
+  async function loadProfileData() {
+    try {
+      const res = await fetch("http://localhost:4000/api/v1/profile", {
+        credentials: "include"
+      });
+      if (!res.ok) throw new Error("Erreur chargement profil");
+
+      const data = await res.json();
+      document.getElementById("full-name").value = data.name || "";
+      document.getElementById("email").value = data.email || "";
+      document.getElementById("birthdate").value = data.birthdate || "";
+    } catch (err) {
+      document.getElementById("profile-status").textContent =
+        "Impossible de charger le profil.";
+    }
+  }
+
+  // Soumission formulaire profil
+  document.getElementById("profile-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("full-name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const birthdate = document.getElementById("birthdate").value;
+
+    try {
+      const res = await fetch("http://localhost:4000/api/v1/profile", {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, birthdate })
+      });
+
+      if (!res.ok) throw new Error("Erreur mise à jour");
+
+      document.getElementById("profile-status").textContent =
+        "Profil mis à jour avec succès.";
+    } catch (err) {
+      document.getElementById("profile-status").textContent =
+        "Erreur lors de la mise à jour.";
+    }
+  });
+</script>
+
+</body>
+</html>

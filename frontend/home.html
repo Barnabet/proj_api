@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home</title>
+  <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+
+<header>
+  <nav>
+    <button id="tab-profile" class="active">Mon Profil Complet</button>
+    <button id="tab-todo">To Do List</button>
+  </nav>
+  <button id="logout">Déconnexion</button>
+</header>
+
+<main>
+
+  <section id="profile-section" class="active">
+    <h2>Mon Profil</h2>
+    <form id="profile-form">
+      <label>Bio :</label><br />
+      <textarea id="bio" rows="4" cols="40"></textarea><br />
+
+      <label>Avatar (URL) :</label><br />
+      <input type="text" id="avatar" /><br />
+
+      <label>Location :</label><br />
+      <input type="text" id="location" /><br />
+
+      <button type="submit">Sauvegarder</button>
+    </form>
+    <p id="profile-status"></p>
+  </section>
+
+  <section id="todo-section">
+    <h2>To Do List sur calendrier</h2>
+    <div class="calendar" id="calendar"></div>
+  </section>
+
+</main>
+
+<script>
+  const tabProfile = document.getElementById("tab-profile");
+  const tabTodo = document.getElementById("tab-todo");
+  const sectionProfile = document.getElementById("profile-section");
+  const sectionTodo = document.getElementById("todo-section");
+
+  function activateTab(tab) {
+    tabProfile.classList.remove("active");
+    tabTodo.classList.remove("active");
+    sectionProfile.classList.remove("active");
+    sectionTodo.classList.remove("active");
+
+    if (tab === "profile") {
+      tabProfile.classList.add("active");
+      sectionProfile.classList.add("active");
+      loadProfile();
+    } else {
+      tabTodo.classList.add("active");
+      sectionTodo.classList.add("active");
+    }
+  }
+
+  tabProfile.addEventListener("click", () => activateTab("profile"));
+  tabTodo.addEventListener("click", () => activateTab("todo"));
+
+  // Déconnexion
+  document.getElementById("logout").addEventListener("click", () => {
+    fetch("http://localhost:4000/auth/logout", { credentials: "include" })
+      .then(() => window.location.href = "/")
+      .catch(() => window.location.href = "/");
+  });
+
+  // Générer calendrier simple
+  const tasks = {
+    2: ["Réunion projet", "Envoyer rapport"],
+    5: ["Faire la lessive"],
+    10: ["Appeler client"],
+    15: ["Préparer présentation"],
+  };
+
+  function generateCalendar() {
+    const calendar = document.getElementById("calendar");
+    calendar.innerHTML = "";
+    for (let day = 1; day <= 30; day++) {
+      const dayDiv = document.createElement("div");
+      dayDiv.className = "day";
+      dayDiv.innerHTML = `<strong>Jour ${day}</strong>`;
+      if (tasks[day]) {
+        tasks[day].forEach(task => {
+          const taskDiv = document.createElement("div");
+          taskDiv.className = "task";
+          taskDiv.textContent = task;
+          dayDiv.appendChild(taskDiv);
+        });
+      }
+      calendar.appendChild(dayDiv);
+    }
+  }
+  generateCalendar();
+
+  // Charger profil depuis profile-service
+  async function loadProfile() {
+    try {
+      const res = await fetch("http://localhost:5001/api/v1/profile/me", {
+        credentials: "include"
+      });
+      if (!res.ok) throw new Error("Erreur chargement profil");
+      const data = await res.json();
+      document.getElementById("bio").value = data.bio || "";
+      document.getElementById("avatar").value = data.avatar || "";
+      document.getElementById("location").value = data.location || "";
+      document.getElementById("profile-status").textContent = "";
+    } catch (err) {
+      document.getElementById("profile-status").textContent =
+        "Impossible de charger le profil.";
+    }
+  }
+
+  // Sauvegarde profil
+  document.getElementById("profile-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const bio = document.getElementById("bio").value.trim();
+    const avatar = document.getElementById("avatar").value.trim();
+    const location = document.getElementById("location").value.trim();
+
+    try {
+      const res = await fetch("http://localhost:5001/api/v1/profile", {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bio, avatar, location })
+      });
+      if (!res.ok) throw new Error("Erreur sauvegarde profil");
+      document.getElementById("profile-status").textContent =
+        "Profil sauvegardé avec succès.";
+    } catch (err) {
+      document.getElementById("profile-status").textContent =
+        "Erreur lors de la sauvegarde.";
+    }
+  });
+
+  // Charger profil si onglet actif au démarrage
+  if (tabProfile.classList.contains("active")) {
+    loadProfile();
+  }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,172 @@
+/* style.css */
+
+body {
+  font-family: 'Helvetica Neue', sans-serif;
+  background: #f4f4f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: #085a74;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.8em;
+}
+
+nav {
+  display: flex;
+  gap: 20px;
+}
+
+nav a,
+nav button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s;
+}
+
+nav a.active,
+nav button.active {
+  border-bottom: 2px solid #006d88;
+  font-weight: bold;
+}
+
+#logout {
+  background: #e74c3c;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+main {
+  padding: 20px;
+  max-width: 900px;
+  margin: 40px auto;
+  text-align: center;
+}
+
+.button,
+button[type="submit"] {
+  display: inline-block;
+  padding: 12px 24px;
+  background: #438494;
+  color: #ffffff;
+  text-decoration: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 16px;
+}
+
+.button:hover,
+button[type="submit"]:hover {
+  background: #327996;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"] {
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 20px;
+  width: 80%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: #333;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+section {
+  display: none;
+}
+
+section.active {
+  display: block;
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  background: #E6B98C;
+  opacity: 0.3;
+  z-index: -1;
+}
+
+.circle.small {
+  width: 80px;
+  height: 80px;
+  top: 100px;
+  left: 20px;
+}
+
+.circle.medium {
+  width: 200px;
+  height: 200px;
+  bottom: 50px;
+  right: 50px;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-top: 20px;
+}
+
+.day {
+  background: #ecf0f1;
+  padding: 10px;
+  border-radius: 6px;
+  min-height: 80px;
+}
+
+.day strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.task {
+  background: #3498db;
+  color: white;
+  padding: 4px 6px;
+  border-radius: 4px;
+  margin-top: 5px;
+  font-size: 14px;
+}

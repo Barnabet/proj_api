@@ -1,0 +1,37 @@
+C:.
+│   .env
+│   .env.example
+│   .gitignore
+│   docker-compose.yml
+│   README-ProjectSubject.md
+│   README.md
+│
+├───.dist
+├───frontend
+│       dashboard.html
+│       Dockerfile
+│       index.html
+│       package-lock.json
+│       package.json
+│       README.md
+│
+└───gateway
+    │   Dockerfile
+    │   package-lock.json
+    │   package.json
+    │
+    ├───prisma
+    │   │   schema.prisma
+    │   │
+    │   └───migrations
+    │       │   migration_lock.toml
+    │       │
+    │       └───20250706122153_init
+    │               migration.sql
+    │
+    ├───src
+    │       index.js
+    │       server.js
+    │
+    └───tests
+            hello.test.js

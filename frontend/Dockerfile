@@ -12,4 +12,4 @@ COPY . .
 EXPOSE 5173
 
 # Start the static server
-CMD ["serve", "-l", "5173", "."] 
+CMD ["npm", "run", "dev"] 
